@@ -1,7 +1,6 @@
 """ Trim tail and adaptors from sequences.
 The 16S is a short amplicon, so the adaptor and tail has been sequenced in the final end of these sequences. 
 We need therefore to trim them in order to merge the paired-end reads.
-
 Created on Jul 30 2014
 """
 from Bio import SeqIO
