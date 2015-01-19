@@ -5,6 +5,7 @@ The 16S is a short amplicon, so the adaptor and tail has been sequenced in the f
 We need therefore to trim them in order to merge the paired end reads.
 
 Created on Jul 30 2014
+modified: Jan 2015
 """
 from Bio import SeqIO
 import regex
