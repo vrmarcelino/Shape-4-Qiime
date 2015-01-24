@@ -7,6 +7,7 @@ We need therefore to trim them in order to merge the paired end reads.
 Created on Jul 30 2014
 modified: Jan 2015
 """
+
 from Bio import SeqIO
 import regex
 import sys
@@ -14,7 +15,7 @@ import sys
 # Help
 if len(sys.argv) == 1:
     print ""
-    print "Script to trimm the tail and adaptors from short freads"
+    print "Script to trimm the tail and adaptors from short reads"
     print ""
     print "Usage: supply the file name and inform if its forward or reverse"
     print "ex: python trim_adaptors.py my_fastq_file.fastq forward"
