@@ -60,11 +60,13 @@ for file in input_fasta:
     do_it = add_barcode(original_reads, barcode_seq)
     
 # Store info for mapping file
-    full_sample_name = str(file)
-    name_split = full_sample_name.split("_")
-    sample_name = name_split[0]
+    file_path = str(file)
+    name_split_1 = file_path.split("/")
+    full_sample_name = name_split_1[-1]
+    name_split_2 = full_sample_name.split("_")
+    sample_name = name_split_2[0]
     mapping_file.append(sample_name + '\t' + barcode_seq)
-     
+
     counter +=1
 
 # Save stuff
