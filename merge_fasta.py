@@ -1,6 +1,9 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ Concatenate different fasta files and add barcodes.
 Run this script after separate fasta and qual files (see onvert_fastaqual_fastq.py from qiime)
+
+Usage ex: merge_fasta.py samples_list.csv *.fna
 
 Created on Thu Jul 31 15:49:39 2014
 
