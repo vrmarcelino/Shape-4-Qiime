@@ -19,15 +19,11 @@ import pandas # for .csv handling
 
 #input files:
 samples_indexes = str(sys.argv[1])
-si = pandas.read_csv("samples_list_run2.csv")
-
-Sample_ID = si["Sample_ID"]
-Index_ID = si["Frd_index_name"] + si["Rev_index_name"]
+si = pandas.read_csv(samples_indexes)
 Index_seq = si["Frd_Index"] + si["Rev_Index_RC"]
 
-
 input_fasta = []
-for n in sys.argv[1:]:
+for n in sys.argv[2:]:
     input_fasta.append(str(n))
 
 #Store the files
@@ -41,26 +37,33 @@ def add_barcode(records, barcode):
 
 #iterate over input files
 counter = 0
+mapping_file = ["#SampleID"+'\t'+"BarcodeSequence"+'\t'+"LinkerPrimerSequence"+'\t'+"BlaBlaBla"+'\t'+"Description"]
 for file in input_fasta:
     original_reads = SeqIO.parse(file, "fasta")
 
-# match sample name
-    full_sample_name = str(file)
-    name_split = full_sample_name.split("_")
-    sample_name = name_split[0]
-    
     barcode_seq = Index_seq[counter]
     print""
     print "Adding the barcode %s to the %s file" %(barcode_seq, file)
     do_it = add_barcode(original_reads, barcode_seq)
-    counter +=1
-  
-
-SeqIO.write(all_records, "all_records.fna", "fasta")
-print""
-print "Done!"
-
     
-        
-        
-        
+# Store info for mapping file
+    full_sample_name = str(file)
+    name_split = full_sample_name.split("_")
+    sample_name = name_split[0]
+    mapping_file.append(sample_name + '\t' + barcode_seq)
+     
+    counter +=1
+
+# Save stuff
+SeqIO.write(all_records, "all_records.fna", "fasta")
+
+savefile = open("map.txt", "w")
+for lines in mapping_file:
+    savefile.write("%s\n" % lines)
+
+print""
+print "Mapping file saved as 'map.txt'"
+
+print ""
+
+print "Done!"

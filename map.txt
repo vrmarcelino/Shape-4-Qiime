@@ -1,0 +1,5 @@
+#SampleID	BarcodeSequence	LinkerPrimerSequence	BlaBlaBla	Description
+Blank-PCR-1	TAGATCGCTCGCCTTA
+C1	CTCTCTATTCGCCTTA
+C2	TATCCTCTTCGCCTTA
+Ghost	AGAGTAGATCGCCTTA
