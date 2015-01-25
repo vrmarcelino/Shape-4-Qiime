@@ -5,74 +5,30 @@ Run this script after separate fasta and qual files (see onvert_fastaqual_fastq.
 Created on Thu Jul 31 15:49:39 2014
 
 @author: VanessaRM
+
+Still need to be done: match the .fna sample name with the sample_ID in the csv file.
+At this point, this script will add the indexes by alphabetic(?) order, 
+so the indexe-sample match is not the same as the orginal ones.
+
+
 """
 
 from Bio import SeqIO
 import sys
-
+import pandas # for .csv handling
 
 #input files:
-input_files = []
+samples_indexes = str(sys.argv[1])
+si = pandas.read_csv("samples_list_run2.csv")
+
+Sample_ID = si["Sample_ID"]
+Index_ID = si["Frd_index_name"] + si["Rev_index_name"]
+Index_seq = si["Frd_Index"] + si["Rev_Index_RC"]
+
+
+input_fasta = []
 for n in sys.argv[1:]:
-    input_files.append(str(n))
-
-
-
-#barcodes sequences:
-S501N701= "TAGATCGCTAAGGCGA" #PHV882-M1b
-S502N701= "CTCTCTATTAAGGCGA" #VRM130d - M1b
-S503N701= "TATCCTCTTAAGGCGA" #VRM135 - M1b
-S504N701= "AGAGTAGATAAGGCGA" #PHV570-M3a
-S505N701= "GTAAGGAGTAAGGCGA" #PHV237-M3a
-S506N701= "ACTGCATATAAGGCGA" #PHV882-M3a
-S507N701= "AAGGAGTATAAGGCGA" #PHV207-M3a
-S508N701= "CTAAGCCTTAAGGCGA" #VRM135-M3a
-S501N702= "TAGATCGCCGTACTAG" #VRM190-M3a
-S502N702= "CTCTCTATCGTACTAG" #PHV237-M1a
-S503N702= "TATCCTCTCGTACTAG" #PHV237-kit
-S504N702= "AGAGTAGACGTACTAG" #VRM036e1_M1a
-S505N702= "GTAAGGAGCGTACTAG" #VRM036e1_kit
-S508N702= "CTAAGCCTCGTACTAG" #VRM028e1-kit
-S501N703= "TAGATCGCAGGCAGAA" #VRM091e-kit1
-S504N703= "AGAGTAGAAGGCAGAA" #VRM032_e1
-S506N703= "ACTGCATAAGGCAGAA" #VRM032_c
-S507N703= "AAGGAGTAAGGCAGAA" #VRM0060
-S508N703= "CTAAGCCTAGGCAGAA" #VRM066
-S501N704= "TAGATCGCTCCTGAGC" #VRM067
-S502N704= "CTCTCTATTCCTGAGC" #VRM0081
-S503N704= "TATCCTCTTCCTGAGC" #VRM0086
-S504N704= "AGAGTAGATCCTGAGC" #VRM0087
-S505N704= "GTAAGGAGTCCTGAGC" #VRM90_e1
-S506N704= "ACTGCATATCCTGAGC" #VRM096
-S508N704= "CTAAGCCTTCCTGAGC" #VRM098
-S501N705= "TAGATCGCGGACTCCT" #VRM099
-S502N705= "CTCTCTATGGACTCCT" #VRM100
-S505N705= "GTAAGGAGGGACTCCT" #VRM106
-S506N705= "ACTGCATAGGACTCCT" #VRM115
-S507N705= "AAGGAGTAGGACTCCT" #VRM120
-S508N705= "CTAAGCCTGGACTCCT" #VRM121
-S501N706= "TAGATCGCTAGGCATG" #VRM122
-S502N706= "CTCTCTATTAGGCATG" #VRM123
-S503N706= "TATCCTCTTAGGCATG" #VRM124
-S504N706= "AGAGTAGATAGGCATG" #C4
-S505N706= "GTAAGGAGTAGGCATG" #C9
-S506N706= "ACTGCATATAGGCATG" #C10_1
-S507N706= "AAGGAGTATAGGCATG" #blank (PCR)
-S501N709= "TAGATCGCGCTACGCT" #VRM091e-kit1
-S502N709= "CTCTCTATGCTACGCT" #VRM0086
-S503N709= "TATCCTCTGCTACGCT" #VRM0087
-S504N709= "AGAGTAGAGCTACGCT" #VRM90_e1
-S505N709= "GTAAGGAGGCTACGCT" #VRM096
-S506N709= "ACTGCATAGCTACGCT" #VRM121
-S507N709= "AAGGAGTAGCTACGCT" #PHV237-M3a
-S508N709= "CTAAGCCTGCTACGCT" #blank (PCR)
-
-barcodes = (S501N701,S502N701,S503N701,S504N701,S505N701,S506N701,S507N701,S508N701,S501N702,S502N702,
-            S503N702,S504N702, S505N702,S508N702,S501N703,S504N703,S506N703,S507N703,S508N703,S501N704,
-            S502N704,S503N704,S504N704,S505N704,S506N704,S508N704,S501N705,S502N705,S505N705,S506N705,
-            S507N705, S508N705,S501N706,S502N706,S503N706,S504N706,S505N706,S506N706,S507N706,S501N709,S502N709,
-            S503N709,S504N709,S505N709,S506N709,S507N709,S508N709)
-
+    input_fasta.append(str(n))
 
 #Store the files
 all_records = []
@@ -85,9 +41,15 @@ def add_barcode(records, barcode):
 
 #iterate over input files
 counter = 0
-for file in input_files:
+for file in input_fasta:
     original_reads = SeqIO.parse(file, "fasta")
-    barcode_seq = barcodes[counter]
+
+# match sample name
+    full_sample_name = str(file)
+    name_split = full_sample_name.split("_")
+    sample_name = name_split[0]
+    
+    barcode_seq = Index_seq[counter]
     print""
     print "Adding the barcode %s to the %s file" %(barcode_seq, file)
     do_it = add_barcode(original_reads, barcode_seq)
