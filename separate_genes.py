@@ -1,4 +1,4 @@
-separate_genes.py
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 Script to separate genes from MiSeq run fastQ files (NEXTERA style)

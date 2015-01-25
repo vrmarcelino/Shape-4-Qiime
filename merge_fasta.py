@@ -15,10 +15,20 @@ so the indexe-sample match is not the same as the orginal ones.
 
 
 """
-
 from Bio import SeqIO
 import sys
 import pandas # for .csv handling
+
+#help
+if len(sys.argv) == 1:
+    print ""
+    print "Script to concatenate fasta files and add indexes for Qiime pipeline"
+    print ""
+    print "Usage: supply the csv file with indexes and the fasta (.fasta or .fna) files"
+    print "ex: merge_fasta.py samples_list.csv *.fna"
+    print ""
+    print ""
+    sys.exit()
 
 #input files:
 samples_indexes = str(sys.argv[1])
