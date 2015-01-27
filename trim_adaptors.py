@@ -52,7 +52,7 @@ def trimmer (records, tail):
             yield record
         else:
             # Trim it!
-            cut_off = (int(index.span()[0]) - 6) #where the tail starts minus 6 bp to cut off linkers and spacers
+            cut_off = (int(index.span()[0]) - 4) #where the tail starts minus 4 bp to cut off those "Ns" added for complexity
             yield record [:cut_off]
         
         
