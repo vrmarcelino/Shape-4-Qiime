@@ -50,12 +50,15 @@ mkdir 03_Fasta_Qual/18S
 mkdir 03_Fasta_Qual/UPA
 mkdir 03_Fasta_Qual/tufA
 
+#only need if running macqiime
 source /macqiime/configs/bash_profile.txt
+
 for file in 02_Separated_genes/16S/*.fastq; do convert_fastaqual_fastq.py -f $file -c fastq_to_fastaqual -o 03_Fasta_Qual/16S/; done >>screen.out 2>> screen.err
 for file in 02_Separated_genes/18S/*.fastq; do convert_fastaqual_fastq.py -f $file -c fastq_to_fastaqual -o 03_Fasta_Qual/18S/; done >>screen.out 2>> screen.err
 for file in 02_Separated_genes/UPA/*.fastq; do convert_fastaqual_fastq.py -f $file -c fastq_to_fastaqual -o 03_Fasta_Qual/UPA/; done >>screen.out 2>> screen.err
 for file in 02_Separated_genes/tufA/*.fastq; do convert_fastaqual_fastq.py -f $file -c fastq_to_fastaqual -o 03_Fasta_Qual/tufA/; done >>screen.out 2>> screen.err
 
+#only need if running macqiime, will return an error in Linux, doesn't matter.
 source ~/.bash_profile
 
 ### Merge fasta and qual - need samples_list.csv with indexes
