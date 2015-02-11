@@ -72,12 +72,12 @@ for file in input_fasta:
 # Save stuff
 SeqIO.write(all_records, "all_records.fna", "fasta")
 
-savefile = open("map.txt", "w")
+savefile = open("Map_x.txt", "w")
 for lines in mapping_file:
     savefile.write("%s\n" % lines)
 
 print""
-print "Mapping file saved as 'map.txt'"
+print "Mapping file saved as 'Map_x.txt'"
 
 print ""
 
