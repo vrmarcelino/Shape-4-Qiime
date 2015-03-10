@@ -2,15 +2,12 @@
 
 # Pipeline for analysing environmental samples.
 # Part 3 - Clean dataset from spurious reads, make and clean OTU table
-# Part of this pipeline only works with Qiime 1.8
+# Works with Qiime 1.9
 # Use make_otu_heatmap.py instead of make_otu_heatmap_html.py if using Qiime 1.9
 # Requires patchines_ids.txt or other txt file with samples IDs to keep in the following analyses
 # 11 - Feb - 2015
 
 echo "Launching....."
-
-#only need if running macqiime
-source /macqiime/configs/bash_profile.txt
 
 
 ### Make OTU_table.biom and filter OTUs with less than 5 reads (in total).
@@ -102,16 +99,16 @@ filter_taxa_from_otu_table.py -i 10_OTU_filtering/tufA/otu_table_semi_final.biom
 echo "Making stats and heatmaps"
 
 biom summarize_table -i 10_OTU_filtering/16S/otu_table_final.biom -o 10_OTU_filtering/16S/OTUs_stats.txt >> screen_16S.out 2>> screen_16S.err
-make_otu_heatmap_html.py -i 10_OTU_filtering/16S/otu_table_final.biom -o 10_OTU_filtering/16S/OTU_Heatmap >> screen_16S.out 2>> screen_16S.err
+make_otu_heatmap.py -i 10_OTU_filtering/16S/otu_table_final.biom -o 10_OTU_filtering/16S/OTU_Heatmap >> screen_16S.out 2>> screen_16S.err
 
 biom summarize_table -i 10_OTU_filtering/18S/otu_table_final.biom -o 10_OTU_filtering/18S/OTUs_stats.txt >> screen_18S.out 2>> screen_18S.err
-make_otu_heatmap_html.py -i 10_OTU_filtering/18S/otu_table_final.biom -o 10_OTU_filtering/18S/OTU_Heatmap >> screen_18S.out 2>> screen_18S.err
+make_otu_heatmap.py -i 10_OTU_filtering/18S/otu_table_final.biom -o 10_OTU_filtering/18S/OTU_Heatmap >> screen_18S.out 2>> screen_18S.err
 
 biom summarize_table -i 10_OTU_filtering/UPA/otu_table_final.biom -o 10_OTU_filtering/UPA/OTUs_stats.txt >> screen_UPA.out 2>> screen_UPA.err
-make_otu_heatmap_html.py -i 10_OTU_filtering/UPA/otu_table_final.biom -o 10_OTU_filtering/UPA/OTU_Heatmap >> screen_UPA.out 2>> screen_UPA.err
+make_otu_heatmap.py -i 10_OTU_filtering/UPA/otu_table_final.biom -o 10_OTU_filtering/UPA/OTU_Heatmap >> screen_UPA.out 2>> screen_UPA.err
 
 biom summarize_table -i 10_OTU_filtering/tufA/otu_table_final.biom -o 10_OTU_filtering/tufA/OTUs_stats.txt >> screen_tufA.out 2>> screen_tufA.err
-make_otu_heatmap_html.py -i 10_OTU_filtering/tufA/otu_table_final.biom -o 10_OTU_filtering/tufA/OTU_Heatmap >> screen_tufA.out 2>> screen_tufA.err
+make_otu_heatmap.py -i 10_OTU_filtering/tufA/otu_table_final.biom -o 10_OTU_filtering/tufA/OTU_Heatmap >> screen_tufA.out 2>> screen_tufA.err
 
 ### Filter reference sequences:
 echo "Filtering Reference sequences..."
