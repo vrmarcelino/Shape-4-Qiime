@@ -58,6 +58,16 @@ for file in 02_Separated_genes/18S/*.fastq; do convert_fastaqual_fastq.py -f $fi
 for file in 02_Separated_genes/UPA/*.fastq; do convert_fastaqual_fastq.py -f $file -c fastq_to_fastaqual -o 03_Fasta_Qual/UPA/; done >>screen.out 2>> screen.err
 for file in 02_Separated_genes/tufA/*.fastq; do convert_fastaqual_fastq.py -f $file -c fastq_to_fastaqual -o 03_Fasta_Qual/tufA/; done >>screen.out 2>> screen.err
 
+# move unmatched files to a separate folder
+mkdir 03_Fasta_Qual/16S/Undertemined_gene
+mv 03_Fasta_Qual/16S/Undetermined* 03_Fasta_Qual/16S/Undertemined_gene
+mkdir 03_Fasta_Qual/18S/Undertemined_gene
+mv 03_Fasta_Qual/18S/Undetermined* 03_Fasta_Qual/18S/Undertemined_gene
+mkdir 03_Fasta_Qual/UPA/Undertemined_gene
+mv 03_Fasta_Qual/UPA/Undetermined* 03_Fasta_Qual/UPA/Undertemined_gene
+mkdir 03_Fasta_Qual/tufA/Undertemined_gene
+mv 03_Fasta_Qual/tufA/Undetermined* 03_Fasta_Qual/tufA/Undertemined_gene
+
 #only need if running macqiime, will return an error in Linux, doesn't matter.
 source ~/.bash_profile
 
