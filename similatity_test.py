@@ -16,6 +16,8 @@ Created on Thu Mar 12 15:12:41 2015
 from Bio import SeqIO
 from Bio import AlignIO
 from argparse import ArgumentParser
+import os
+import numpy as np
 
 #Input data
 parser = ArgumentParser()
@@ -99,7 +101,7 @@ for group_id in seqs_by_group_dict:
         
         os.remove(group_id)
         
-mean_similarity = mean(store_similarities)
+mean_similarity = np.mean(store_similarities)
 print "The mean similarity among these %s is %s" %(wish_tax_level, round(mean_similarity,2))
 
 
