@@ -7,6 +7,7 @@
 # Pipeline for analysing environmental samples.
 # Part 2 - Quality control and picking OTUs
 # Works with Qiime 1.9
+# Use -n option in split libraries if you want to merge runs!!
 # 19 - Jan - 2015
 
 # Note: Seems that Qiime 1.9 doesn't make html OTU tables and html heatmaps anymore. Why???

@@ -51,7 +51,7 @@ filter_observations_by_sample.py -i 10_OTU_filtering/tufA/otu_table_mc5_w_tax_no
 echo "Filtering control samples"
 ### Filter OTUs found in control samples
 
-#create a mapping file for controls:
+#create a mapping file for controls (see mapping file)
 filter_samples_from_otu_table.py -i 10_OTU_filtering/16S/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts.biom -o 10_OTU_filtering/16S/control_samples.biom -m 05_Mapping/16S/Map_16S.txt -s "Host:control" >> screen_16S.out 2>> screen_16S.err
 filter_samples_from_otu_table.py -i 10_OTU_filtering/18S/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts.biom -o 10_OTU_filtering/18S/control_samples.biom -m 05_Mapping/18S/Map_18S.txt -s "Host:control" >> screen_18S.out 2>> screen_18S.err
 filter_samples_from_otu_table.py -i 10_OTU_filtering/UPA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts.biom -o 10_OTU_filtering/UPA/control_samples.biom -m 05_Mapping/UPA/Map_UPA.txt -s "Host:control" >> screen_UPA.out 2>> screen_UPA.err
@@ -88,10 +88,17 @@ filter_otus_from_otu_table.py -i 10_OTU_filtering/UPA/otu_table_mc5_w_tax_no_pyn
 filter_otus_from_otu_table.py -i 10_OTU_filtering/tufA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts.biom -o 10_OTU_filtering/tufA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -e 10_OTU_filtering/tufA/otus_to_really_exclude.txt >> screen_tufA.out 2>> screen_tufA.err
 
 # Filter samples with zero counts, controls and samples that not belong to the patchiness experiment:
-filter_samples_from_otu_table.py -i 10_OTU_filtering/16S/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/16S/otu_table_final.biom  --sample_id_fp patchiness_ids.txt -n 1 >> screen_16S.out 2>> screen_16S.err
-filter_samples_from_otu_table.py -i 10_OTU_filtering/18S/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/18S/otu_table_final.biom --sample_id_fp patchiness_ids.txt -n 1 >> screen_18S.out 2>> screen_18S.err
-filter_samples_from_otu_table.py -i 10_OTU_filtering/UPA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/UPA/otu_table_final.biom --sample_id_fp patchiness_ids.txt -n 1 >> screen_UPA.out 2>> screen_UPA.err
-filter_samples_from_otu_table.py -i 10_OTU_filtering/tufA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/tufA/otu_table_semi_final.biom --sample_id_fp patchiness_ids.txt -n 1 >> screen_tufA.out 2>> screen_tufA.err
+#filter_samples_from_otu_table.py -i 10_OTU_filtering/16S/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/16S/otu_table_final.biom  --sample_id_fp acidification_ids.txt -n 1 >> screen_16S.out 2>> screen_16S.err
+#filter_samples_from_otu_table.py -i 10_OTU_filtering/18S/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/18S/otu_table_final.biom --sample_id_fp acidification_ids.txt -n 1 >> screen_18S.out 2>> screen_18S.err
+#filter_samples_from_otu_table.py -i 10_OTU_filtering/UPA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/UPA/otu_table_final.biom --sample_id_fp acidification_ids.txt -n 1 >> screen_UPA.out 2>> screen_UPA.err
+#filter_samples_from_otu_table.py -i 10_OTU_filtering/tufA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/tufA/otu_table_semi_final.biom --sample_id_fp acidification_ids.txt -n 1 >> screen_tufA.out 2>> screen_tufA.err
+
+# filter only samples with zero counts
+filter_samples_from_otu_table.py -i 10_OTU_filtering/16S/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/16S/otu_table_final.biom -n 1 >> screen_16S.out 2>> screen_16S.err
+filter_samples_from_otu_table.py -i 10_OTU_filtering/18S/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/18S/otu_table_final.biom -n 1 >> screen_18S.out 2>> screen_18S.err
+filter_samples_from_otu_table.py -i 10_OTU_filtering/UPA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/UPA/otu_table_final.biom -n 1 >> screen_UPA.out 2>> screen_UPA.err
+filter_samples_from_otu_table.py -i 10_OTU_filtering/tufA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/tufA/otu_table_semi_final.biom -n 1 >> screen_tufA.out 2>> screen_tufA.err
+
 
 # Filter by taxonomy: only Ulvophyceae for tufA dataset
 filter_taxa_from_otu_table.py -i 10_OTU_filtering/tufA/otu_table_semi_final.biom -p c_Ulvophyceae -o 10_OTU_filtering/tufA/otu_table_final.biom >> screen_tufA.out 2>> screen_tufA.err
@@ -116,7 +123,7 @@ make_otu_heatmap_html.py -i 10_OTU_filtering/tufA/otu_table_final.biom -o 10_OTU
 ### Filter reference sequences:
 echo "Filtering Reference sequences..."
 filter_fasta.py -f 08_OTUs/16S/rep_set.fna -b 10_OTU_filtering/16S/otu_table_final.biom -o 08_OTUs/16S/rep_set_final.fna >> screen_16S.out 2>> screen_16S.err
-filter_fasta.py -f 08_OTUs/18S/rep_set.fna -b 10_OTU_filtering/18S/otu_table_final.biom -o 08_OTUs/18S/rep_set_final.fna >> screen_18S.out 2>> screen_168.err
+filter_fasta.py -f 08_OTUs/18S/rep_set.fna -b 10_OTU_filtering/18S/otu_table_final.biom -o 08_OTUs/18S/rep_set_final.fna >> screen_18S.out 2>> screen_18S.err
 filter_fasta.py -f 08_OTUs/UPA/rep_set.fna -b 10_OTU_filtering/UPA/otu_table_final.biom -o 08_OTUs/UPA/rep_set_final.fna >> screen_UPA.out 2>> screen_UPA.err
 filter_fasta.py -f 08_OTUs/tufA/rep_set.fna -b 10_OTU_filtering/tufA/otu_table_final.biom -o 08_OTUs/tufA/rep_set_final.fna >> screen_tufA.out 2>> screen_tufA.err
 

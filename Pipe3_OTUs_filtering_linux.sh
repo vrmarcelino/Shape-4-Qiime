@@ -85,10 +85,10 @@ filter_otus_from_otu_table.py -i 10_OTU_filtering/UPA/otu_table_mc5_w_tax_no_pyn
 filter_otus_from_otu_table.py -i 10_OTU_filtering/tufA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts.biom -o 10_OTU_filtering/tufA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -e 10_OTU_filtering/tufA/otus_to_really_exclude.txt >> screen_tufA.out 2>> screen_tufA.err
 
 # Filter samples with zero counts, controls and samples that not belong to the patchiness experiment:
-filter_samples_from_otu_table.py -i 10_OTU_filtering/16S/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/16S/otu_table_final.biom  --sample_id_fp patchiness_ids.txt -n 1 >> screen_16S.out 2>> screen_16S.err
-filter_samples_from_otu_table.py -i 10_OTU_filtering/18S/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/18S/otu_table_final.biom --sample_id_fp patchiness_ids.txt -n 1 >> screen_18S.out 2>> screen_18S.err
-filter_samples_from_otu_table.py -i 10_OTU_filtering/UPA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/UPA/otu_table_final.biom --sample_id_fp patchiness_ids.txt -n 1 >> screen_UPA.out 2>> screen_UPA.err
-filter_samples_from_otu_table.py -i 10_OTU_filtering/tufA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/tufA/otu_table_semi_final.biom --sample_id_fp patchiness_ids.txt -n 1 >> screen_tufA.out 2>> screen_tufA.err
+filter_samples_from_otu_table.py -i 10_OTU_filtering/16S/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/16S/otu_table_final.biom  --sample_id_fp acidification_ids.txt -n 1 >> screen_16S.out 2>> screen_16S.err
+filter_samples_from_otu_table.py -i 10_OTU_filtering/18S/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/18S/otu_table_final.biom --sample_id_fp acidification_ids.txt -n 1 >> screen_18S.out 2>> screen_18S.err
+filter_samples_from_otu_table.py -i 10_OTU_filtering/UPA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/UPA/otu_table_final.biom --sample_id_fp acidification_ids.txt -n 1 >> screen_UPA.out 2>> screen_UPA.err
+filter_samples_from_otu_table.py -i 10_OTU_filtering/tufA/otu_table_mc5_w_tax_no_pynast_failures_no_ghosts_no_contam.biom -o 10_OTU_filtering/tufA/otu_table_semi_final.biom --sample_id_fp acidification_ids.txt -n 1 >> screen_tufA.out 2>> screen_tufA.err
 
 # Filter by taxonomy: only Ulvophyceae for tufA dataset
 filter_taxa_from_otu_table.py -i 10_OTU_filtering/tufA/otu_table_semi_final.biom -p c_Ulvophyceae -o 10_OTU_filtering/tufA/otu_table_final.biom >> screen_tufA.out 2>> screen_tufA.err
