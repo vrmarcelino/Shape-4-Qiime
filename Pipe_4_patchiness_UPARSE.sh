@@ -10,10 +10,10 @@
 echo "Launching....."
 
 
-### Separate files by amplicon
-echo "Separating files by amplicon and doing global trimming..."
+### Separate files by amplicon - Done
+#echo "Separating files by amplicon and doing global trimming..."
 ### Separate genes (need separate_genes_w_global_trimming.py)
-for file in 01_Extended_Frags/*.fastq; do separate_genes_w_global_trimming.py $file; done >> screen.out 2>> screen.err
+#for file in 01_Extended_Frags/*.fastq; do separate_genes_w_global_trimming.py $file; done >> screen.out 2>> screen.err
 
 mkdir 02_Separated_genes
 mkdir 02_Separated_genes/16S
@@ -128,7 +128,7 @@ usearch8 -derep_fulllength 07_QC/tufA/1_all_recs_qc.fastq -fastqout 07_QC/tufA/2
 
 # Remove clusters with less than 5 reads
 usearch8 -sortbysize 07_QC/16S/2_no_replicates.fastq -fastqout 07_QC/16S/3_all_good_seqs.fastq -minsize 5 >> screen_16S.out 2>> screen_16S.err
-usearch8 -sortbysize 07_QC/16S/2_no_replicates.fastq -fastqout 07_QC/16S/3_all_good_seqs.fastq -minsize 5 >> screen_18S.out 2>> screen_18S.err
+usearch8 -sortbysize 07_QC/18S/2_no_replicates.fastq -fastqout 07_QC/18S/3_all_good_seqs.fastq -minsize 5 >> screen_18S.out 2>> screen_18S.err
 usearch8 -sortbysize 07_QC/UPA/2_no_replicates.fastq -fastqout 07_QC/UPA/3_all_good_seqs.fastq -minsize 5 >> screen_UPA.out 2>> screen_UPA.err
 usearch8 -sortbysize 07_QC/tufA/2_no_replicates.fastq -fastqout 07_QC/tufA/3_all_good_seqs.fastq -minsize 5 >> screen_tufA.out 2>> screen_tufA.err
 
@@ -170,8 +170,25 @@ assign_taxonomy.py -i 08_OTUs/tufA/otus.fasta -t Ref_dataset_tufA/id_to_taxonomy
 
 	
 #Convert UC to otu-table.txt <<< BMP SCRIPT>>>
-#echo "OTU table"
-#python bmp-map2qiime.py 08_OTUs/map.uc > 08_OTUs/otu_table.txt
+echo "OTU table"
+
+python bmp-map2qiime.py 08_OTUs/16S/map.uc > 08_OTUs/16S/otu_table1.txt
+make_otu_table.py -i 08_OTUs/16S/otu_table1.txt -t 09_Taxonomy/16S/uclust_assigned_taxonomy/otus_tax_assignments.txt -o 08_OTUs/16S/OTU_table1.biom
+biom summarize_table -i 08_OTUs/16S/OTU_table1.biom -o 08_OTUs/16S/OTUs_stats1.txt
+
+
+python bmp-map2qiime.py 08_OTUs/18S/map.uc > 08_OTUs/18S/otu_table1.txt
+make_otu_table.py -i 08_OTUs/18S/otu_table1.txt -t 09_Taxonomy/18S/uclust_assigned_taxonomy/otus_tax_assignments.txt -o 08_OTUs/18S/OTU_table1.biom
+biom summarize_table -i 08_OTUs/18S/OTU_table1.biom -o 08_OTUs/18S/OTUs_stats1.txt
+
+python bmp-map2qiime.py 08_OTUs/UPA/map.uc > 08_OTUs/UPA/otu_table1.txt
+make_otu_table.py -i 08_OTUs/UPA/otu_table1.txt -t 09_Taxonomy/UPA/rdp_assigned_taxonomy/otus_tax_assignments.txt -o 08_OTUs/UPA/OTU_table1.biom
+biom summarize_table -i 08_OTUs/UPA/OTU_table1.biom -o 08_OTUs/UPA/OTUs_stats1.txt
+
+python bmp-map2qiime.py 08_OTUs/tufA/map.uc > 08_OTUs/tufA/otu_table1.txt
+make_otu_table.py -i 08_OTUs/tufA/otu_table1.txt -t 09_Taxonomy/tufA/rdp_assigned_taxonomy/otus_tax_assignments.txt -o 08_OTUs/tufA/OTU_table1.biom
+biom summarize_table -i 08_OTUs/tufA/OTU_table1.biom -o 08_OTUs/tufA/OTUs_stats1.txt
+
 #make_otu_table.py -i 08_OTUs/otu_table.txt -t 09_Taxonomy/rdp_assigned_taxonomy/otus_tax_assignments.txt -o 08_OTUs/OTU_table.biom
 #biom summarize_table -i 08_OTUs/OTU_table.biom -o 08_OTUs/OTUs_stats1.txt
 

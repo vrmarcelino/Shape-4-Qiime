@@ -66,24 +66,46 @@ biom summarize_table -i 08_OTUs/OTU_table.biom -o 08_OTUs/OTUs_stats1.txt
 echo "Filtering by sample"
 filter_observations_by_sample.py -i 08_OTUs/OTU_table.biom -n 5 -o 08_OTUs/OTU_table_filter1.biom >> screen_tufA.out 2>> screen_tufA.err
 
-# Filter by taxonomy: only o_Bryopsidales
-filter_taxa_from_otu_table.py -i 08_OTUs/OTU_table_filter1.biom -p o_Bryopsidales -o 08_OTUs/OTU_table_filter2.biom >> screen_tufA.out 2>> screen_tufA.err
 
-# Filter samples with less than 5 counts and controls:
-filter_samples_from_otu_table.py -i 08_OTUs/OTU_table_filter2.biom -o 08_OTUs/OTU_table_filter3.biom -m 05_Mapping/Map_tufA.txt -s 'Host:*,!control' -n 5 >> screen_tufA.out 2>> screen_tufA.err
+echo "Filtering controls and samples"
+### Filter OTUs found in control samples
+
+#create a mapping file for controls 
+filter_samples_from_otu_table.py -i 08_OTUs/OTU_table_filter1.biom -o 08_OTUs/control_samples1.biom -m 05_Mapping/Map_tufA.txt -s "Host:control" >> screen_tufA.out 2>> screen_tufA.err
+
+# filter OTUs with 0 counts
+filter_otus_from_otu_table.py -i 08_OTUs/control_samples1.biom -o 08_OTUs/control_samples2.biom -n 1 >> screen_tufA.out 2>> screen_tufA.err
+
+#convert to txt file: 
+biom convert -i 08_OTUs/control_samples2.biom -o 08_OTUs/otus_to_remove.txt --to-tsv --table-type="OTU table" >> screen_tufA.out 2>> screen_tufA.err
+
+# Remove only OTUs representing less than 1% of the reads:
+# Requires all_otus.txt + otus_to_remove.txt and filter_otus_to_exclude.py
+# get all otus.txt
+biom convert -i 08_OTUs/OTU_table_filter1.biom -o 08_OTUs/all_otus.txt --to-tsv --table-type="OTU table" >> screen_tufA.out 2>> screen_tufA.err
+
+# Filter real contamninats by 1% 
+filter_otus_to_exclude.py -e 08_OTUs/otus_to_remove.txt -a 08_OTUs/all_otus.txt -o 08_OTUs/otus_to_really_exclude.txt -t 1 >> screen_tufA.out 2>> screen_tufA.err
+
+# Filter otus based on the new otus_to_really_remove table
+filter_otus_from_otu_table.py -i 08_OTUs/OTU_table_filter1.biom -o 08_OTUs/OTU_table_filter2.biom -e 08_OTUs/otus_to_really_exclude.txt >> screen_tufA.out 2>> screen_tufA.err
+
+# Filter by taxonomy: only p_Chlorophyta
+filter_taxa_from_otu_table.py -i 08_OTUs/OTU_table_filter2.biom -p p_Chlorophyta -o 08_OTUs/OTU_table_filter3.biom >> screen_tufA.out 2>> screen_tufA.err
+
+# Filter samples with zero counts, controls and samples that not belong to the tufA diversity study:
+filter_samples_from_otu_table.py -i 08_OTUs/OTU_table_filter3.biom -o 08_OTUs/OTU_table_final.biom -m 05_Mapping/Map_tufA.txt -s "tufDiversity:keep" -n 1 >> screen_tufA.out 2>> screen_tufA.err
 
 
 ### Check with OTU stats and heatmap:
 echo "Making stats and heatmaps"
-biom summarize_table -i 08_OTUs/OTU_table_filter3.biom -o 08_OTUs/OTUs_stats_final.txt >> screen_tufA.out 2>> screen_tufA.err
+biom summarize_table -i 08_OTUs/OTU_table_final.biom -o 08_OTUs/OTUs_stats_final.txt >> screen_tufA.out 2>> screen_tufA.err
 #make_otu_heatmap_html.py -i 08_OTUs/OTU_table_filter3.biom -o 08_OTUs/OTU_Heatmap >> screen_tufA.out 2>> screen_tufA.err
-make_otu_heatmap.py -i 08_OTUs/OTU_table_filter3.biom -o 08_OTUs/OTU_Heatmap >> screen_tufA.out 2>> screen_tufA.err
-
+#make_otu_heatmap.py -i 08_OTUs/OTU_table_filter3.biom -o 08_OTUs/OTU_Heatmap >> screen_tufA.out 2>> screen_tufA.err
 
 ### Filter reference sequences:
 echo "Filtering Reference sequences..."
-filter_fasta.py -f 08_OTUs/otus.fasta -b 08_OTUs/OTU_table_filter3.biom -o 08_OTUs/rep_set_final.fna >> screen_tufA.out 2>> screen_tufA.err
+filter_fasta.py -f 08_OTUs/otus.fasta -b 08_OTUs/OTU_table_final.biom -o 08_OTUs/rep_set_final.fna >> screen_tufA.out 2>> screen_tufA.err
 
-
-echo "done"
+#echo "done"
 
